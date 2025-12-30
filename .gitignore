@@ -1,0 +1,15 @@
+# Fichiers de configuration locale de Terraform
+.terraform/
+.terraform.lock.hcl
+
+# Fichiers d'état (Contiennent des infos sensibles sur ton infra)
+*.tfstate
+*.tfstate.backup
+
+# Variables personnelles (Si tu en as créé)
+*.tfvars
+*.tfvars.json
+
+# Logs
+errored.tfstate
+terraform.tflog
