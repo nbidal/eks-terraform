@@ -1,10 +1,8 @@
-# On crée une IP publique fixe pour le NAT Gateway
 resource "aws_eip" "nat" {
   domain = "vpc"
   tags   = { Name = "${var.project_name}-nat-eip" }
 }
 
-# On crée le NAT Gateway dans le premier subnet public
 resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public_a.id # On le place dans le public_a
@@ -12,8 +10,6 @@ resource "aws_nat_gateway" "main" {
   tags = { Name = "${var.project_name}-nat-gw" }
 }
 
-
-#---TABLE ROUTAGE PUBLIQUE (VERS INTERNET)---
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
@@ -25,7 +21,6 @@ resource "aws_route_table" "public" {
   tags = { Name = "${var.project_name}-public-rt" }
 }
 
-# On associe manuellement la table aux 3 subnets publics
 resource "aws_route_table_association" "pub_a" {
   subnet_id      = aws_subnet.public_a.id
   route_table_id = aws_route_table.public.id
@@ -39,8 +34,6 @@ resource "aws_route_table_association" "pub_c" {
   route_table_id = aws_route_table.public.id
 }
 
-# ---TABLE ROUTAGE PRIVE (VERS LE NAT GW)---
-
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
@@ -52,7 +45,6 @@ resource "aws_route_table" "private" {
   tags = { Name = "${var.project_name}-private-rt" }
 }
 
-# On associe manuellement la table aux 3 subnets privés
 resource "aws_route_table_association" "priv_a" {
   subnet_id      = aws_subnet.private_a.id
   route_table_id = aws_route_table.private.id
