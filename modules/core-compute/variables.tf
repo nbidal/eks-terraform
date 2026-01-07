@@ -1,3 +1,8 @@
+variable "private_key_path" {
+  type    = string
+  default = "./grp1_ssh_key.pem"
+}
+
 variable "project_name" {
   description = "Nom du projet utilisé pour taguer les ressources"
   type        = string
