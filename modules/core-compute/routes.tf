@@ -5,7 +5,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public_a.id # On le place dans le public_a
+  subnet_id     = aws_subnet.public_a.id
 
   tags = { Name = "${var.project_name}-nat-gw" }
 }
@@ -15,7 +15,7 @@ resource "aws_route_table" "public" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw.id # Sortie par l'IGW
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = { Name = "${var.project_name}-public-rt" }
@@ -39,7 +39,7 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.main.id # Sortie sécurisée par le NAT
+    nat_gateway_id = aws_nat_gateway.main.id
   }
 
   tags = { Name = "${var.project_name}-private-rt" }
